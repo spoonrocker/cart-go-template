@@ -1,17 +1,3 @@
-## ⭐️⭐️⭐️ Instructions for Interviewers ⭐️⭐️⭐️
-
-**IMPORTANT:**
-
-1. Create a new repository called `github.com/spoonrocker/cart-<candidate>`.
-   Replace `<candidate>` with the candidate's name.
-
-2. Copy this `README.md` file to the new repository and *remove this section*.
-
-3. Give candidate access to read/write the new repository.
-
-4. Wait for pull request from candidate and provide feedback on his or her approach.
-
----
 
 Cart API
 ========
