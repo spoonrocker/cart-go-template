@@ -4,15 +4,15 @@ Cart API
 
 ## Overview
 
-This repository contains a programming exercise for interview candidates. The
+This repository contains a Go programming exercise for interview candidates. The
 goal is to see how you approach a real world programming task. In this case,
-you'll be developing an API for an online shopping cart.
+you'll be developing an API for an online shopping cart in the Go programming language.
 
 
 ## Process
 
 1. Create a feature branch.
-2. Implement the requirements below as if this were a real project to be deployed.
+2. Implement the requirements below as if this were a real Go project to be deployed.
 3. Submit a PR to this repository.
 4. Discuss your approach and tradeoffs via PR review.
 
@@ -20,9 +20,11 @@ you'll be developing an API for an online shopping cart.
 ## Requirements
 
 This is a REST API for basic CRUD operations for an online shopping cart. Data
-should be persisted in a storage layer which can be in-memory or using a Go
+should be persisted in a storage layer which can use Postgres, MongoDB, or a Go
 storage library such as [BoltDB](https://github.com/boltdb/bolt) or
 [Badger](https://github.com/dgraph-io/badger).
+
+Please include tests for your application.
 
 ### Domain Types
 
