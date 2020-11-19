@@ -1,0 +1,148 @@
+openapi: 3.0.0
+info:
+  title: Cart API
+  version: 1.0.0
+paths:
+  /carts:
+    post:
+      summary: Create cart
+      description: A new cart should be created and an ID generated. The new empty cart should be returned.
+      responses:
+        '200':
+          description: Cart was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyCart'
+        '500':
+          description: Internal Server Error
+  /carts/{cartId}:
+    get:
+      summary: View cart
+      description: An existing cart should be able to be viewed with its items. Should fail if the cart does not exist.
+      parameters:
+        - in: path
+          name: cartId
+          schema:
+            type: integer
+          required: true
+          description: cart identifier
+      responses:
+        '200':
+          description: Cart was retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '404':
+          description: Cart not found
+        '500':
+          description: Internal Server Error
+  /carts/{cartId}/items:
+    post:
+      summary: Add to cart
+      description: A new item should added to an existing cart. Should fail if the cart does not exist, if the product name is blank, or if the quantity is non-positive. The new item should be returned.
+      parameters:
+        - in: path
+          name: cartId
+          schema:
+            type: integer
+          required: true
+          description: cart identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBodyItem'
+      responses:
+        '200':
+          description: Submission was successfully recovered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItems'
+        '400':
+          description: Bad request. Either there is no product name or the quantity is non-positive
+        '404':
+          description: Cart not found
+        '500':
+          description: Internal Server Error
+  /carts/{cartId}/items/{itemId}:
+    delete:
+      summary: Remove from cart
+      description: An existing item should be removed from a cart. Should fail if the cart does not exist or if the item does not exist.
+      parameters:
+        - in: path
+          name: cartId
+          schema:
+            type: integer
+          required: true
+          description: cart identifier
+        - in: path
+          name: itemId
+          schema:
+            type: integer
+          required: true
+          description: item identifier
+      responses:
+        '200':
+          description: Item was successfully removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyCartItem'
+        '404':
+          description: Cart not found or item not found
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    EmptyCart:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cart'
+          example: []
+    Cart:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItems'
+    CartItems:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        cart_id:
+          type: integer
+          example: 1
+        product:
+          type: string
+          example: Shoes
+        quantity:
+          type: integer
+          example: 10
+    EmptyCartItem:
+      type: object
+      example: {}
+    RequestBodyItem:
+      type: object
+      properties:
+        product:
+          type: string
+          example: Shoes
+        quantity:
+          type: integer
+          example: 10
