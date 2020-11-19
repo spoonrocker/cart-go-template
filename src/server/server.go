@@ -64,6 +64,10 @@ func (s *Server) viewCart(w http.ResponseWriter, r *http.Request) {
 
 	cart, err := s.CartService.GetCart(cartId)
 	if err != nil {
+		if _, ok := err.(*model.CartNotFoundError); ok {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -98,6 +102,18 @@ func (s *Server) AddToCart(w http.ResponseWriter, r *http.Request) {
 
 	cartItem, err := s.CartService.AddNewItemToCart(cartId, item)
 	if err != nil {
+		if _, ok := err.(*model.InvaidQuantityError); ok {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		if _, ok := err.(*model.InvalidProductError); ok {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		if _, ok := err.(*model.CartNotFoundError); ok {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -115,10 +131,14 @@ func (s *Server) AddToCart(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) RemoveFromCart(w http.ResponseWriter, r *http.Request) {
 	cartId, _ := strconv.Atoi(mux.Vars(r)[varCart])
-	itemId, _ := strconv.Atoi(mux.Vars(r)[varCart])
+	itemId, _ := strconv.Atoi(mux.Vars(r)[varItem])
 
 	cartItems, err := s.CartService.RemoveItemFromCart(cartId, itemId)
 	if err != nil {
+		if _, ok := err.(*model.ItemNotFoundError); ok {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

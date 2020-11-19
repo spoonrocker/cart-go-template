@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type Item struct {
 	Id       int    `json:"id"`
 	CartId   int    `json:"cart_id"`
@@ -8,6 +10,7 @@ type Item struct {
 }
 
 type Cart struct {
-	Id    int    `json:"id"`
-	Items []Item `json:"items"`
+	Id    int       `json:"id"`
+	Date  time.Time `json:"-"`
+	Items []Item    `json:"items"`
 }

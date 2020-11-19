@@ -42,13 +42,19 @@ echo "Creating Database"
 sudo -u postgres psql -c "create database ${CART_DB} owner ${CART_USER}"
 sudo -u postgres psql -c "select datname from pg_catalog.pg_database"
 # Assign permissions
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON TABLE cart TO cart"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON TABLE cart_id_seq TO cart"
+
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON TABLE items TO cart"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON TABLE items_id_seq TO cart"
+
 sudo -u postgres psql -c "grant all privileges on all tables in schema public to ${CART_USER}"
 sudo -u postgres psql -c "grant all privileges on all sequences in schema public to ${CART_USER}"
 
 echo "Creating Database Tables"
 # create cart table
-sudo -u postgres psql -U ${CART_USER} -h 127.0.0.1 -d ${CART_DB} -c "create table ${CART_TABLE}(id serial primary key)"
+sudo -u postgres psql -U ${CART_USER} -h 127.0.0.1 -d ${CART_DB} -c "create table ${CART_TABLE}(id serial primary key, date date not null)"
 sudo -u postgres psql -U ${CART_USER} -h 127.0.0.1 -d ${CART_DB} -c "select * from ${CART_TABLE}"
 # create items table
-sudo -u postgres psql -U ${CART_USER} -h 127.0.0.1 -d ${CART_DB} -c "create table ${ITEMS_TABLE}(id serial primary key, id_cart varchar(60) not null REFERENCES cart (id), product varchar(60) not null, quantity bigint not null)"
+sudo -u postgres psql -U ${CART_USER} -h 127.0.0.1 -d ${CART_DB} -c "create table ${ITEMS_TABLE}(id serial, cart_id int REFERENCES ${CART_TABLE} (id) , product varchar(60) not null, quantity bigint not null, primary key(id, cart_id))"
 sudo -u postgres psql -U ${CART_USER} -h 127.0.0.1 -d ${CART_DB} -c "select * from ${ITEMS_TABLE}"

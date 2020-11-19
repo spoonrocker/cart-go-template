@@ -10,13 +10,15 @@ import (
 )
 
 const (
+	dbHost     = "localhost"
+	dbPort     = 5434
 	dbUser     = "cart"
 	dbPassword = "cart"
 	dbName     = "dbcart"
 )
 
 func main() {
-	cartModel, err := model.NewModel(dbUser, dbPassword, dbName)
+	cartModel, err := model.NewModel(dbHost, dbPort, dbUser, dbPassword, dbName)
 	if err != nil {
 		panic(fmt.Sprintf("Cannot initialize database connection: %s", err))
 	}
