@@ -9,8 +9,8 @@ import (
 	"strconv"
 
 	"github.com/boltdb/bolt"
-	"github.com/cabogabo/cart-api/commons"
-	"github.com/cabogabo/cart-api/commons/response"
+	"github.com/cabogabo/cart-api/cmd/commons"
+	"github.com/cabogabo/cart-api/cmd/commons/response"
 	"github.com/gorilla/mux"
 )
 

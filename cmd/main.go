@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/cabogabo/cart-api/commons"
+	"github.com/cabogabo/cart-api/cmd/commons"
 
-	"github.com/cabogabo/cart-api/cart"
+	"github.com/cabogabo/cart-api/cmd/cart"
 	"github.com/gorilla/mux"
 )
 

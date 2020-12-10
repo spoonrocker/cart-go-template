@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/boltdb/bolt"
-	"github.com/cabogabo/cart-api/commons"
+	"github.com/cabogabo/cart-api/cmd/commons"
 )
 
 func getCart(ID int) (CartRO, error) {
