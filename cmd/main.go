@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/cabogabo/cart-api/cmd/commons"
 
@@ -18,5 +19,7 @@ func main() {
 func handleRequests() {
 	router := mux.NewRouter().StrictSlash(true)
 	cart.HandleRequests(router)
-	log.Fatal(http.ListenAndServe(":3000", router))
+	port := os.Getenv("PORT")
+	log.Println("Listening to port " + port)
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }

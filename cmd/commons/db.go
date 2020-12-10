@@ -3,6 +3,7 @@ package commons
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/boltdb/bolt"
 )
@@ -10,7 +11,7 @@ import (
 var DB *bolt.DB
 
 func Connect() {
-	db, err := bolt.Open("rs.db", 0600, nil)
+	db, err := bolt.Open(os.Getenv("DATABASE"), 0600, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
