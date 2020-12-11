@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  server:
+    image: cosmtrek/air
+    working_dir: /go/src/github.com/cabogabo/cart-api/cmd
+    volumes:
+      - .:/go/src/github.com/cabogabo/cart-api
+    env_file: .env
+    ports:
+      - 3000:3000
