@@ -12,7 +12,6 @@ func Created(entity interface{}, w http.ResponseWriter) {
 
 func Ok(entity interface{}, w http.ResponseWriter) {
 	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(entity)
 }
 

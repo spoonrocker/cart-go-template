@@ -1,11 +1,22 @@
 package response
 
-import "net/http"
+import (
+	"encoding/json"
+	"net/http"
 
-func NotFound(entity string, err error, w http.ResponseWriter) {
-	http.Error(w, entity+" not found", http.StatusNotFound)
-}
+	"github.com/cabogabo/cart-api/cmd/commons"
+)
 
-func FieldNotValid(entity string, w http.ResponseWriter) {
-	http.Error(w, entity+" is invalid", http.StatusBadRequest)
+func ResponseError(errorMessage commons.ErrorMessage, w http.ResponseWriter) {
+	switch errorMessage.ErrorType {
+	case "invalid_field":
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(errorMessage)
+	case "not_found":
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(errorMessage)
+	default:
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(errorMessage)
+	}
 }
