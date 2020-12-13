@@ -8,7 +8,7 @@ First, it is needed to create a .env file, there is a .env.example file in order
 Once the environment variables are set at the .env file, set the ports on the docker-compose.yml file.
 
 ```bash
-docker compose up -d
+docker-compose up -d
 ```
 
 ## Production deployment
