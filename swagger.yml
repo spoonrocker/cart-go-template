@@ -18,6 +18,17 @@ definitions:
     title: CartItem represents items added to cart.
     type: object
     x-go-package: github.com/fedo3nik/cart-go-api/internal/domain/model
+  addItemRequest:
+    properties:
+      product:
+        type: string
+        x-go-name: Product
+      quantity:
+        format: int64
+        type: integer
+        x-go-name: Quantity
+    type: object
+    x-go-package: github.com/fedo3nik/cart-go-api/internal/doc
 info:
   description: Documentation for Cart API
   title: Cart API
@@ -29,7 +40,7 @@ paths:
       operationId: createCart
       responses:
         "200":
-          $ref: '#/responses/createCartResponse'
+          $ref: '#/responses/cartResponse'
         "502":
           $ref: '#/responses/errorResponse'
       tags:
@@ -42,12 +53,13 @@ paths:
       - example: 1
         format: int64
         in: path
-        name: CartID
+        name: cartID
         required: true
         type: integer
+        x-go-name: CartID
       responses:
         "200":
-          $ref: '#/responses/getCartResponse'
+          $ref: '#/responses/cartResponse'
         "400":
           $ref: '#/responses/errorResponse'
         "502":
@@ -62,22 +74,14 @@ paths:
       - example: 1
         format: int64
         in: path
-        name: CartID
+        name: cartID
         required: true
         type: integer
-      - example: '"Hat"'
-        in: body
-        name: product
+        x-go-name: CartID
+      - in: body
+        name: Body
         schema:
-          type: string
-        x-go-name: Product
-      - example: "10"
-        in: body
-        name: quantity
-        schema:
-          format: int64
-          type: integer
-        x-go-name: Quantity
+          $ref: '#/definitions/addItemRequest'
       responses:
         "200":
           $ref: '#/responses/addItemResponse'
@@ -95,15 +99,17 @@ paths:
       - example: 3
         format: int64
         in: path
-        name: CartID
+        name: cartID
         required: true
         type: integer
+        x-go-name: CartID
       - example: 5
         format: int64
         in: path
-        name: ItemID
+        name: itemID
         required: true
         type: integer
+        x-go-name: ItemID
       responses:
         "200":
           $ref: '#/responses/removeItemResponse'
@@ -134,7 +140,7 @@ responses:
         description: Quantity of the products in the cartItem
         format: int64
         type: integer
-  createCartResponse:
+  cartResponse:
     description: New cart created successfully
     headers:
       id:
@@ -142,7 +148,7 @@ responses:
         format: int64
         type: integer
       items:
-        description: Empty array of cartItems
+        description: Array of cartItems
         items:
           $ref: '#/definitions/CartItem'
         type: array
@@ -152,18 +158,6 @@ responses:
       message:
         description: Error message
         type: string
-  getCartResponse:
-    description: The cart with the items in it
-    headers:
-      id:
-        description: ID of the new cart
-        format: int64
-        type: integer
-      items:
-        description: Array of items placed in the cart
-        items:
-          $ref: '#/definitions/CartItem'
-        type: array
   removeItemResponse:
     description: CartItem removed from the cart successfully
 schemes:

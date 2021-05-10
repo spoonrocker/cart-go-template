@@ -113,13 +113,12 @@ linters:
     - wsl
 
 issues:
-  # Excluding configuration per-path, per-linter, per-text and per-source
   exclude-rules:
     - path: _test\.go
       linters:
         - gomnd
+        - testpackage
 
-    # https://github.com/go-critic/go-critic/issues/926
     - linters:
         - gocritic
       text: "unnecessaryDefer:"
@@ -130,6 +129,7 @@ run:
     - internal/cache
     - internal/renameio
     - internal/robustio
+    - internal/doc
 
 service:
   golangci-lint-version: 1.23.x # use the fixed version to not introduce new linters unexpectedly

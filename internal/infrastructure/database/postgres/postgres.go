@@ -131,10 +131,10 @@ func GetCart(ctx context.Context, p *pgxpool.Pool, cartID int) (*model.Cart, err
 	}
 
 	cart.ID = cartID
+
+	cart.Items = []model.CartItem{}
 	if items != nil {
 		cart.Items = items
-	} else {
-		cart.Items = []model.CartItem{}
 	}
 
 	return &cart, nil

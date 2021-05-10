@@ -17,42 +17,43 @@ package doc
 
 import "github.com/fedo3nik/cart-go-api/internal/domain/model"
 
+type addItemRequest struct {
+	Product  string `json:"product"`
+	Quantity int    `json:"quantity"`
+}
+
 // swagger:parameters addItemParams addItem
 type addItemParams struct {
 	// in: path
 	// example: 1
-	CartID int
+	CartID int `json:"cartID"`
 	// in: body
-	// example: "Hat"
-	Product string `json:"product"`
-	// in: body
-	// example: 10
-	Quantity int `json:"quantity"`
+	Body addItemRequest
 }
 
 // swagger:parameters removeItemParams removeItem
 type removeItemParams struct {
 	// in: path
 	// example: 3
-	CartID int
+	CartID int `json:"cartID"`
 	// in: path
 	// example: 5
-	ItemID int
+	ItemID int `json:"itemID"`
 }
 
 // swagger:parameters getCartParams getCart
 type getCartParams struct {
 	// in: path
 	// example: 1
-	CartID int
+	CartID int `json:"cartID"`
 }
 
 // New cart created successfully
-// swagger:response createCartResponse
-type createCartResponse struct {
+// swagger:response cartResponse
+type cartResponse struct {
 	// ID of the new cart
 	CartID int `json:"id"`
-	// Empty array of cartItems
+	// Array of cartItems
 	Items []model.CartItem `json:"items"`
 }
 
@@ -72,15 +73,6 @@ type addItemResponse struct {
 // CartItem removed from the cart successfully
 // swagger:response removeItemResponse
 type removeItemResponse struct {
-}
-
-// The cart with the items in it
-// swagger:response getCartResponse
-type getCartResponse struct {
-	// ID of the new cart
-	CartID int `json:"id"`
-	// Array of items placed in the cart
-	Items []model.CartItem `json:"items"`
 }
 
 // Error caused

@@ -61,7 +61,7 @@ func TestCartService_AddItem(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			item, err := cs.AddItem(context.Background(), tc.product, tc.quantity, tc.cartID)
 			if err != nil {
-				assert.Equal(t, tc.expectedError, err)
+				assert.ErrorIs(t, err, tc.expectedError)
 				return
 			}
 

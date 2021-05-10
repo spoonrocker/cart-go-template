@@ -71,7 +71,7 @@ func TestHTTPCreateCartHandler_ServeHTTP(t *testing.T) {
 
 	e := httpexpect.New(t, server.URL)
 
-	expectedResult := controller.CartResponse{ID: maxCartID + 1, Items: []model.CartItem{}}
+	expectedResult := controller.CartResponse{ID: maxCartID + 1, Items: []controller.ItemResponse{}}
 
 	e.POST("/carts").Expect().Status(http.StatusOK).JSON().Object().Equal(expectedResult)
 }

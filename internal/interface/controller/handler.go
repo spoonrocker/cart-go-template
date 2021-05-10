@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"github.com/fedo3nik/cart-go-api/internal/application/service"
-	"github.com/fedo3nik/cart-go-api/internal/domain/model"
 	e "github.com/fedo3nik/cart-go-api/internal/errors"
 	dto "github.com/fedo3nik/cart-go-api/internal/interface/controller/dtohttp"
 
@@ -76,7 +75,7 @@ func NewHTTPCreateCartHandler(cartService service.Cart) *HTTPCreateCartHandler {
 // swagger:route POST /carts carts createCart
 // Returns a new cart
 // responses:
-//	200: createCartResponse
+//	200: cartResponse
 //  502: errorResponse
 
 // ServeHTTP is a method to handle CreateCart endpoint.
@@ -101,7 +100,7 @@ func (hh HTTPCreateCartHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 	}
 
 	resp.ID = cart.ID
-	resp.Items = []model.CartItem{}
+	resp.Items = []dto.ItemResponse{}
 
 	err = json.NewEncoder(w).Encode(&resp)
 	if err != nil {
@@ -136,12 +135,14 @@ func (hh HTTPAddItemHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	cartID, err := strconv.Atoi(strCartID)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+
 		return
 	}
 
 	var req dto.AddItemRequest
 
-	var resp dto.AddItemResponse
+	var resp dto.ItemResponse
 
 	err = json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
@@ -156,6 +157,8 @@ func (hh HTTPAddItemHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		err = json.NewEncoder(w).Encode(&resp)
 		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+
 			return
 		}
 
@@ -199,11 +202,15 @@ func (hh HTTPRemoveItemHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 	cartID, err := strconv.Atoi(strCartID)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+
 		return
 	}
 
 	itemID, err := strconv.Atoi(strItemID)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+
 		return
 	}
 
@@ -239,7 +246,7 @@ func NewHTTPGetCartHandler(cartService service.Cart) *HTTPGetCartHandler {
 // swagger:route GET /carts/{cartID} carts getCart
 // Returns cart with the items in it
 // responses:
-//	200: getCartResponse
+//	200: cartResponse
 //	400: errorResponse
 //	502: errorResponse
 
@@ -255,6 +262,8 @@ func (hh HTTPGetCartHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	cartID, err := strconv.Atoi(strCartID)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+
 		return
 	}
 
@@ -266,6 +275,8 @@ func (hh HTTPGetCartHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		err = json.NewEncoder(w).Encode(&resp)
 		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+
 			return
 		}
 
@@ -273,7 +284,15 @@ func (hh HTTPGetCartHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp.ID = cartID
-	resp.Items = cart.Items
+	resp.Items = []dto.ItemResponse{}
+
+	if cart.Items != nil {
+		for _, i := range cart.Items {
+			item := dto.ItemResponse{ID: i.ID, CartID: cartID, Product: i.Product, Quantity: i.Quantity}
+
+			resp.Items = append(resp.Items, item)
+		}
+	}
 
 	err = json.NewEncoder(w).Encode(&resp)
 	if err != nil {
